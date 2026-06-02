@@ -32,5 +32,5 @@ pass (T20).
 
 ## Status
 
-Planning complete. Coding has **not** started — begin with task **T0** in the
-implementation plan once approved.
+**Implemented + verified.** Builds + runs on the iPhone 15 Pro Max simulator;
+`tsc` clean; 9/9 Jest tests green; all 8 red-lines pass. See `validation-report.md`.

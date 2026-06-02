@@ -8,17 +8,20 @@ of the [SwiftUI](../Ozon-SwiftUI-iOS-Russian-Ecommerce-Market-App) and
 [UIKit](../Ozon-UIKit-iOS-Russian-Ecommerce-Market-App) builds — same screens, tokens,
 and data; different framework.
 
-> **Status: spec/plan complete — implementation not started.** This repo currently
-> holds the spec-first docs (`docs/`) adapted for React Native + TypeScript. Screenshots
-> and the test suite are added once the build lands (begin at task **T0** in the plan).
+> **Status: implemented + verified.** Builds + runs on the iPhone 15 Pro Max
+> simulator (Metro + Hermes, New Architecture); `tsc` clean; **21/21 Jest + 10/10 Detox e2e green**.
 
 ---
 
 ## Screenshots
 
-_Added after the RN build (`docs/implementation/implementation-plan.md`, Phase 7).
-The 5 reference screens: Home (Главная), Catalog (Каталог), Favorites (Избранное),
-Cart (Корзина), Profile (Мой Ozon)._
+| Home (Главная) | Catalog (Каталог) | Favorites (Избранное) |
+|----------------|-------------------|-----------------------|
+| ![Home](docs/screenshots/01_home.jpg) | ![Catalog](docs/screenshots/02_catalog.jpg) | ![Favorites](docs/screenshots/03_favorites.jpg) |
+
+| Cart (Корзина) | Profile (Мой Ozon) |
+|----------------|--------------------|
+| ![Cart](docs/screenshots/04_cart.jpg) | ![Profile](docs/screenshots/05_profile.jpg) |
 
 ---
 
@@ -34,7 +37,7 @@ Cart (Корзина), Profile (Мой Ozon)._
 | Data | `ProductRepository` interface → `SampleDataRepository`, injected via Context |
 | Styling | Token objects (`theme/`), `StyleSheet`, `react-native-linear-gradient` |
 | Lists | `FlatList` (grids `numColumns`, paged carousel, horizontal rail) |
-| Tests | Jest + React Native Testing Library (Detox e2e optional) |
+| Tests | Jest + RNTL (21) + Detox e2e (10) — all green |
 | Dependencies | Minimal standard RN libs (navigation, safe-area, screens, gradient, icons) |
 
 ---
@@ -110,7 +113,7 @@ src/theme/
 
 ---
 
-## Project Structure (planned)
+## Project Structure
 
 ```
 src/
@@ -166,27 +169,44 @@ gate is visual fidelity + a **layering review** + **8 binary red-lines** + the
 
 | # | Red-line | Status |
 |---|----------|--------|
-| 1 | Logo pill always below the safe area | ⏳ pending build |
-| 2 | Favorites featured card compact + left-aligned | ⏳ |
-| 3 | Cart empty state is a full-width band (not an inset card) | ⏳ |
-| 4 | Profile = two separate grouped sections | ⏳ |
-| 5 | Catalog has the centered logo | ⏳ |
-| 6 | Home hero lives inside the gradient header | ⏳ |
-| 7 | One shared `Product` type + single `ProductCard` | ⏳ |
-| 8 | Brand wordmark/colors never hardcoded in screen components | ⏳ |
+| 1 | Logo pill always below the safe area | ✅ |
+| 2 | Favorites featured card compact + left-aligned | ✅ |
+| 3 | Cart empty state is a full-width band (not an inset card) | ✅ |
+| 4 | Profile = two separate grouped sections | ✅ |
+| 5 | Catalog has the centered logo | ✅ |
+| 6 | Home hero lives inside the gradient header | ✅ |
+| 7 | One shared `Product` type + single `ProductCard` | ✅ |
+| 8 | Brand wordmark/colors never hardcoded in screen components | ✅ |
 
 ---
 
-## Tests (planned)
+## Tests
 
-Jest + React Native Testing Library will cover every screen + the navigation flow
-(product → `ProductDetail` → back) and structural assertions (2-col/3-col grids, ru
-pluralization). Real geometry / red-line frames optionally via Detox e2e. See
-`docs/implementation/validation-plan.md` §5.
+Jest + React Native Testing Library — **21/21 green** across 4 suites:
+- **Unit:** `reviewWord` ru pluralization; `SampleDataRepository` (collection sizes,
+  category order, `productById`, featured favorite).
+- **Components:** `ProductCard` (press + badge), `PriceBlock`, `RatingRow`,
+  `CategoryCard`, `SearchBar`.
+- **Screens:** all 5 render their content marker + `ProductDetailScreen` renders by route id.
+- **Navigation flow:** product → `ProductDetail` from **all four** product tabs (Home,
+  Favorites, Cart, Profile).
+
+**Detox e2e** (`e2e/app.test.js`) — **10/10 green** on the iPhone 15 Pro Max simulator,
+exercising real device flows the unit suite can't:
+- **Flows:** launches on Home; **switches across all five tabs** (real tab-bar taps,
+  each screen's marker asserted); product → `ProductDetail` push.
+- **Red-lines as real geometry** (`getAttributes()` frame checks): #1 logo pill below
+  the safe area + centered; #2 Favorites featured card compact + left-aligned; #3 Cart
+  empty band full-width; #4 Profile two separate sections; #5 Catalog 3-col grid; #6
+  Home hero inside the gradient header. #7/#8 (single `ProductCard` / brand not
+  hardcoded) are code-level red-lines, runtime-proxied by the shared `productCard` /
+  `brandPill` appearing on every product surface.
 
 ```bash
-npm test
-npx tsc --noEmit
+npm test               # Jest + RNTL unit/component (21)
+npx tsc --noEmit       # types
+npm run e2e:build      # Detox release build (iOS sim)
+npm run e2e:test       # Detox e2e (4)
 ```
 
 ---
