@@ -12,7 +12,7 @@ iPhone 15 Pro Max simulator via Metro. Scaffolded with the React Native Communit
 | `npx react-native start` (Metro) | running |
 | build + run (Xcode/iOS sim) | SUCCEEDED, warnings only (pods/Hermes) |
 | screenshot per tab | captured all 5 screens |
-| `jest` (RNTL) | 9 passed, 0 failed |
+| `jest` (RNTL) | 21 passed, 0 failed (4 suites) |
 
 Tabs were screenshotted by temporarily setting the bottom-tab `initialRouteName` +
 relaunching (UI tap automation is unavailable for the screenshot tool); the override
@@ -58,9 +58,15 @@ was reverted before sign-off.
 
 | Group | Result |
 |-------|--------|
-| Unit (ru pluralization) + component (`ProductCard` press, badge) | ✅ |
-| Screens render markers (5) + product→detail navigation call | ✅ |
-| Total | ✅ 9/9 |
+| Unit — `reviewWord` + `SampleDataRepository` (sizes, order, productById, featured) | ✅ |
+| Components — `ProductCard` (press, badge), `PriceBlock`, `RatingRow`, `CategoryCard`, `SearchBar` | ✅ |
+| Screens — all 5 render markers + `ProductDetailScreen` by route id | ✅ |
+| Navigation — product→ProductDetail from all 4 product tabs (Home/Favorites/Cart/Profile) | ✅ |
+| Total | ✅ 21/21 |
+
+> Coverage gap (honest): the 5-tab bar structure is verified via runtime screenshots,
+> not a full-navigator RNTL render (heavy native mocking); real layout geometry / red-
+> line frames would need Detox e2e (out of scope for v1).
 
 ## Anti-slop gate
 

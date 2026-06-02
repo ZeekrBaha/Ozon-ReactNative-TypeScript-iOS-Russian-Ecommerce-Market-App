@@ -9,7 +9,7 @@ of the [SwiftUI](../Ozon-SwiftUI-iOS-Russian-Ecommerce-Market-App) and
 and data; different framework.
 
 > **Status: implemented + verified.** Builds + runs on the iPhone 15 Pro Max
-> simulator (Metro + Hermes, New Architecture); `tsc` clean; **9/9 Jest tests green**.
+> simulator (Metro + Hermes, New Architecture); `tsc` clean; **21/21 Jest tests green**.
 
 ---
 
@@ -37,7 +37,7 @@ and data; different framework.
 | Data | `ProductRepository` interface → `SampleDataRepository`, injected via Context |
 | Styling | Token objects (`theme/`), `StyleSheet`, `react-native-linear-gradient` |
 | Lists | `FlatList` (grids `numColumns`, paged carousel, horizontal rail) |
-| Tests | Jest + React Native Testing Library — 9 tests, all green |
+| Tests | Jest + React Native Testing Library — 21 tests, all green |
 | Dependencies | Minimal standard RN libs (navigation, safe-area, screens, gradient, icons) |
 
 ---
@@ -182,9 +182,17 @@ gate is visual fidelity + a **layering review** + **8 binary red-lines** + the
 
 ## Tests
 
-Jest + React Native Testing Library — **9/9 green**. Covers ru pluralization,
-`ProductCard` press, every screen's content marker, and the product → `ProductDetail`
-navigation call. Real on-device geometry / red-line frames optionally via Detox e2e
+Jest + React Native Testing Library — **21/21 green** across 4 suites:
+- **Unit:** `reviewWord` ru pluralization; `SampleDataRepository` (collection sizes,
+  category order, `productById`, featured favorite).
+- **Components:** `ProductCard` (press + badge), `PriceBlock`, `RatingRow`,
+  `CategoryCard`, `SearchBar`.
+- **Screens:** all 5 render their content marker + `ProductDetailScreen` renders by route id.
+- **Navigation flow:** product → `ProductDetail` from **all four** product tabs (Home,
+  Favorites, Cart, Profile).
+
+The 5-tab bar structure is exercised at runtime (screenshots) rather than in a full-
+navigator render test; real on-device geometry / red-line frames would use Detox e2e
 (out of scope for v1). See `docs/implementation/validation-plan.md` §5.
 
 ```bash

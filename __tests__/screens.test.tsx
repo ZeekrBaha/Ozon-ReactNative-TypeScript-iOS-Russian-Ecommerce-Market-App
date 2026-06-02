@@ -24,6 +24,7 @@ import {CatalogScreen} from '../src/screens/CatalogScreen';
 import {FavoritesScreen} from '../src/screens/FavoritesScreen';
 import {CartScreen} from '../src/screens/CartScreen';
 import {ProfileScreen} from '../src/screens/ProfileScreen';
+import {ProductDetailScreen} from '../src/screens/ProductDetailScreen';
 
 const wrap = (ui: React.ReactElement) => render(<RepositoryProvider>{ui}</RepositoryProvider>);
 
@@ -45,12 +46,26 @@ describe('screens render their content marker', () => {
   it('Profile → CTA', () => {
     expect(wrap(<ProfileScreen />).getByText('Войдите в личный кабинет')).toBeTruthy();
   });
+  it('ProductDetail → renders the product by route id', () => {
+    // useRoute mock returns { productId: 'watch' }
+    expect(
+      wrap(<ProductDetailScreen />).getByText('Смарт часы женские круглые, 2 ремешка, smart watch'),
+    ).toBeTruthy();
+  });
 });
 
-describe('navigation flow', () => {
-  it('tapping a product card navigates to ProductDetail', () => {
-    const {getAllByTestId} = wrap(<FavoritesScreen />);
+describe('navigation flow — product → ProductDetail from every product tab', () => {
+  const cases: [string, React.ReactElement][] = [
+    ['Home', <HomeScreen />],
+    ['Favorites', <FavoritesScreen />],
+    ['Cart', <CartScreen />],
+    ['Profile', <ProfileScreen />],
+  ];
+  it.each(cases)('%s: pressing a card navigates to ProductDetail', (_name, ui) => {
+    const {getAllByTestId} = wrap(ui);
     fireEvent.press(getAllByTestId('productCard')[0]);
-    expect(mockNavigate).toHaveBeenCalledWith('ProductDetail', {productId: 'watch'});
+    expect(mockNavigate).toHaveBeenCalledWith('ProductDetail', {
+      productId: expect.any(String),
+    });
   });
 });
