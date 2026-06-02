@@ -58,10 +58,10 @@ export const AppNavigator: React.FC = () => (
         return <Icon name={focused ? active : inactive} size={size} color={color} />;
       },
     })}>
-    <Tab.Screen name="Главная" component={HomeStack} />
-    <Tab.Screen name="Каталог" component={CatalogStack} />
-    <Tab.Screen name="Избранное" component={FavoritesStack} />
-    <Tab.Screen name="Корзина" component={CartStack} />
-    <Tab.Screen name="Мой Ozon" component={ProfileStack} />
+    <Tab.Screen name="Главная" component={HomeStack} options={{tabBarButtonTestID: 'tab-home'}} />
+    <Tab.Screen name="Каталог" component={CatalogStack} options={{tabBarButtonTestID: 'tab-catalog'}} />
+    <Tab.Screen name="Избранное" component={FavoritesStack} options={{tabBarButtonTestID: 'tab-favorites'}} />
+    <Tab.Screen name="Корзина" component={CartStack} options={{tabBarButtonTestID: 'tab-cart'}} />
+    <Tab.Screen name="Мой Ozon" component={ProfileStack} options={{tabBarButtonTestID: 'tab-profile'}} />
   </Tab.Navigator>
 );

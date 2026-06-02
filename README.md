@@ -9,7 +9,7 @@ of the [SwiftUI](../Ozon-SwiftUI-iOS-Russian-Ecommerce-Market-App) and
 and data; different framework.
 
 > **Status: implemented + verified.** Builds + runs on the iPhone 15 Pro Max
-> simulator (Metro + Hermes, New Architecture); `tsc` clean; **21/21 Jest tests green**.
+> simulator (Metro + Hermes, New Architecture); `tsc` clean; **21/21 Jest + 4/4 Detox e2e green**.
 
 ---
 
@@ -37,7 +37,7 @@ and data; different framework.
 | Data | `ProductRepository` interface → `SampleDataRepository`, injected via Context |
 | Styling | Token objects (`theme/`), `StyleSheet`, `react-native-linear-gradient` |
 | Lists | `FlatList` (grids `numColumns`, paged carousel, horizontal rail) |
-| Tests | Jest + React Native Testing Library — 21 tests, all green |
+| Tests | Jest + RNTL (21) + Detox e2e (4) — all green |
 | Dependencies | Minimal standard RN libs (navigation, safe-area, screens, gradient, icons) |
 
 ---
@@ -191,13 +191,19 @@ Jest + React Native Testing Library — **21/21 green** across 4 suites:
 - **Navigation flow:** product → `ProductDetail` from **all four** product tabs (Home,
   Favorites, Cart, Profile).
 
-The 5-tab bar structure is exercised at runtime (screenshots) rather than in a full-
-navigator render test; real on-device geometry / red-line frames would use Detox e2e
-(out of scope for v1). See `docs/implementation/validation-plan.md` §5.
+**Detox e2e** (`e2e/app.test.js`) — **4/4 green** on the iPhone 15 Pro Max simulator,
+exercising real device flows the unit suite can't:
+- launches on Home;
+- **switches across all five tabs** (real tab bar taps) and asserts each screen's marker;
+- product → `ProductDetail` push;
+- red-line #1 as a real geometry check — `getAttributes()` confirms the logo pill sits
+  below the safe area and is horizontally centered.
 
 ```bash
-npm test
-npx tsc --noEmit
+npm test               # Jest + RNTL unit/component (21)
+npx tsc --noEmit       # types
+npm run e2e:build      # Detox release build (iOS sim)
+npm run e2e:test       # Detox e2e (4)
 ```
 
 ---
