@@ -26,6 +26,7 @@ export const FavoritesScreen: React.FC = () => {
 
   return (
     <ScrollView
+      testID="favoritesScreen"
       style={styles.screen}
       contentContainerStyle={{paddingTop: insets.top + 8, paddingBottom: insets.bottom + 24, gap: 16}}>
       <AppLogoHeader />

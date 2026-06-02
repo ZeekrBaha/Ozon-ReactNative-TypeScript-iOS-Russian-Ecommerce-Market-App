@@ -9,7 +9,7 @@ of the [SwiftUI](../Ozon-SwiftUI-iOS-Russian-Ecommerce-Market-App) and
 and data; different framework.
 
 > **Status: implemented + verified.** Builds + runs on the iPhone 15 Pro Max
-> simulator (Metro + Hermes, New Architecture); `tsc` clean; **21/21 Jest + 4/4 Detox e2e green**.
+> simulator (Metro + Hermes, New Architecture); `tsc` clean; **21/21 Jest + 10/10 Detox e2e green**.
 
 ---
 
@@ -37,7 +37,7 @@ and data; different framework.
 | Data | `ProductRepository` interface → `SampleDataRepository`, injected via Context |
 | Styling | Token objects (`theme/`), `StyleSheet`, `react-native-linear-gradient` |
 | Lists | `FlatList` (grids `numColumns`, paged carousel, horizontal rail) |
-| Tests | Jest + RNTL (21) + Detox e2e (4) — all green |
+| Tests | Jest + RNTL (21) + Detox e2e (10) — all green |
 | Dependencies | Minimal standard RN libs (navigation, safe-area, screens, gradient, icons) |
 
 ---
@@ -113,7 +113,7 @@ src/theme/
 
 ---
 
-## Project Structure (planned)
+## Project Structure
 
 ```
 src/
@@ -191,13 +191,16 @@ Jest + React Native Testing Library — **21/21 green** across 4 suites:
 - **Navigation flow:** product → `ProductDetail` from **all four** product tabs (Home,
   Favorites, Cart, Profile).
 
-**Detox e2e** (`e2e/app.test.js`) — **4/4 green** on the iPhone 15 Pro Max simulator,
+**Detox e2e** (`e2e/app.test.js`) — **10/10 green** on the iPhone 15 Pro Max simulator,
 exercising real device flows the unit suite can't:
-- launches on Home;
-- **switches across all five tabs** (real tab bar taps) and asserts each screen's marker;
-- product → `ProductDetail` push;
-- red-line #1 as a real geometry check — `getAttributes()` confirms the logo pill sits
-  below the safe area and is horizontally centered.
+- **Flows:** launches on Home; **switches across all five tabs** (real tab-bar taps,
+  each screen's marker asserted); product → `ProductDetail` push.
+- **Red-lines as real geometry** (`getAttributes()` frame checks): #1 logo pill below
+  the safe area + centered; #2 Favorites featured card compact + left-aligned; #3 Cart
+  empty band full-width; #4 Profile two separate sections; #5 Catalog 3-col grid; #6
+  Home hero inside the gradient header. #7/#8 (single `ProductCard` / brand not
+  hardcoded) are code-level red-lines, runtime-proxied by the shared `productCard` /
+  `brandPill` appearing on every product surface.
 
 ```bash
 npm test               # Jest + RNTL unit/component (21)

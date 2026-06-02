@@ -13,7 +13,7 @@ iPhone 15 Pro Max simulator via Metro. Scaffolded with the React Native Communit
 | build + run (Xcode/iOS sim) | SUCCEEDED, warnings only (pods/Hermes) |
 | screenshot per tab | captured all 5 screens |
 | `jest` (RNTL) | 21 passed, 0 failed (4 suites) |
-| `detox build` + `detox test` (ios.sim.release) | 4 passed, 0 failed |
+| `detox build` + `detox test` (ios.sim.release) | 10 passed, 0 failed |
 
 Tabs were screenshotted by temporarily setting the bottom-tab `initialRouteName` +
 relaunching (UI tap automation is unavailable for the screenshot tool); the override
@@ -65,19 +65,25 @@ was reverted before sign-off.
 | Navigation — product→ProductDetail from all 4 product tabs (Home/Favorites/Cart/Profile) | ✅ |
 | Total | ✅ 21/21 |
 
-### Detox e2e (`e2e/app.test.js`, ios.sim.release) — 4/4
+### Detox e2e (`e2e/app.test.js`, ios.sim.release) — 10/10
 
 | Test | Covers |
 |------|--------|
 | launches on Home | app boots; Home marker visible |
 | switches across all five tabs | real tab-bar taps; each screen's marker visible |
 | product → detail push | tap a `productCard` → `Товар` detail header |
-| red-line #1 (geometry) | `getAttributes()`: logo pill below safe area + centered |
+| #1 (geometry) | logo pill below safe area + centered |
+| #2 (geometry) | Favorites featured card width < 60% screen + left-aligned |
+| #3 (geometry) | Cart empty band width > 90% screen (full-width) |
+| #4 (geometry) | Profile CTA + settings are two separated sections |
+| #5 (geometry) | Catalog category card width < 38% screen (3-col) + logo present |
+| #6 (geometry) | Home hero ("О!") frame is within the gradient header frame |
+| #7/#8 (proxy) | shared `productCard` + `brandPill` render on every product surface |
 
-> Detox closes the RNTL gap: the 5-tab structure and a real layout-frame red-line are
-> now exercised on a booted simulator. Remaining red-lines (#2–#8) are verified
-> visually + structurally; extending Detox `getAttributes` checks to all of them is
-> straightforward follow-on work.
+> Geometry assertions use Detox `getAttributes()` frames, scoped per screen via
+> `withAncestor(screenTestID)` (inactive tab screens stay mounted, so testIDs repeat).
+> Red-lines #1–#6 are now real on-device frame checks; #7 (single ProductCard) and #8
+> (brand not hardcoded) are code-level and runtime-proxied.
 
 ## Anti-slop gate
 

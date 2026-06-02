@@ -26,6 +26,7 @@ export const CartScreen: React.FC = () => {
 
   return (
     <ScrollView
+      testID="cartScreen"
       style={styles.screen}
       contentContainerStyle={{paddingTop: insets.top + 8, paddingBottom: insets.bottom + 24, gap: 16}}>
       <AppLogoHeader />

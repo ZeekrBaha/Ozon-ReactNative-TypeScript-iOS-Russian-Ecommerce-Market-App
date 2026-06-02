@@ -37,11 +37,12 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <ScrollView
+      testID="homeScreen"
       style={styles.screen}
       contentContainerStyle={{paddingBottom: insets.bottom + 24, gap: 20}}>
       {/* Gradient header — bleeds under the status bar. Gradient is an absolute
           background so the container sizes to its children (New Arch sizing fix). */}
-      <View style={[styles.header, {paddingTop: insets.top + 8}]}>
+      <View testID="homeHeader" style={[styles.header, {paddingTop: insets.top + 8}]}>
         <LinearGradient
           colors={[brand.gradientTop, brand.gradientBottom]}
           style={StyleSheet.absoluteFill}

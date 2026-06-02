@@ -29,10 +29,11 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <ScrollView
+      testID="profileScreen"
       style={styles.screen}
       contentContainerStyle={{paddingBottom: insets.bottom + 24, gap: 16}}>
       {/* A. CTA section — white, rounded bottom, bleeds under status bar */}
-      <View style={[styles.cta, {paddingTop: insets.top + 8}]}>
+      <View testID="profileCta" style={[styles.cta, {paddingTop: insets.top + 8}]}>
         <AppLogoHeader />
         <LinearGradient colors={[brand.gradientTop, brand.gradientBottom]} style={styles.avatar}>
           <Icon name="person" size={46} color="#FFFFFF" />
@@ -53,7 +54,7 @@ export const ProfileScreen: React.FC = () => {
 
       {/* B. Settings group */}
       <View style={styles.gutter}>
-        <View style={styles.settings}>
+        <View testID="profileSettings" style={styles.settings}>
           {settings.map((item, i) => (
             <SettingsRow key={item.id} item={item} showDivider={i < settings.length - 1} />
           ))}
